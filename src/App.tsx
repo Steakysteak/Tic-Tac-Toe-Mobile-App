@@ -1,23 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  FlatList,
+  Pressable,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
 import Snackbar from 'react-native-snackbar';
 import Icons from './components/Icons';
+import { Touchable } from 'react-native';
 
 function App(): JSX.Element {
   const [isCross, setIsCross] = useState<boolean>(false);
   const [gameWinner, setGameWinner] = useState<string>('');
   const [gameState, setGameState] = useState(new Array(9).fill('empty', 0, 9));
 
-  const reloadGame = () => {
+
+  const reloadGame = (e:any) => {
     setIsCross(false);
     setGameWinner('');
     setGameState(new Array(9).fill('empty', 0, 9));
@@ -55,7 +58,7 @@ function App(): JSX.Element {
       gameState[4] === gameState[7]
     ) {
       setGameWinner(`${gameState[1]} won the game! 🥳`);
-    } else if ( 
+    } else if (
       gameState[2] !== 'empty' &&
       gameState[2] === gameState[5] &&
       gameState[5] === gameState[8]
@@ -79,33 +82,82 @@ function App(): JSX.Element {
   };
 
   const onChangeItem = (itemNumber: number) => {
-    if(gameWinner) {
+    if (gameWinner) {
       return Snackbar.show({
         text: gameWinner,
         backgroundColor: '#000000',
         textColor: '#FFFFFF',
-      })
+      });
     }
 
-    if(gameState[itemNumber] === 'empty') {
+    if (gameState[itemNumber] === 'empty') {
       gameState[itemNumber] = isCross ? 'cross' : 'circle';
       setIsCross(!isCross);
-    }else {
+    } else {
       return Snackbar.show({
-        text: "Position",
-        backgroundColor: "red",
-        textColor: "#FFF",
-      })
+        text: 'Position is already filled',
+        backgroundColor: 'red',
+        textColor: '#FFF',
+      });
     }
 
-    checkIsWinner(); 
-  }
+    checkIsWinner();
+  };
+
+  useEffect(() => {
+      if (gameWinner) {
+        return Snackbar.show({
+          text: gameWinner,
+          backgroundColor: '#000000',
+          textColor: '#FFFFFF',
+        });
+    }
+  }, [gameWinner]);
 
   return (
     <SafeAreaView>
-      <View>
-        <Text>Tic Tac Toe</Text>
-      </View>
+      <StatusBar />
+      {gameWinner ? (
+        <View style={[styles.playerInfo, styles.winnerInfo]}>
+          <Text style={styles.winnerTxt}>{gameWinner}</Text>
+        </View>
+      ) : (
+        <View
+          style={[
+            styles.playerInfo,
+            isCross ? styles.playerX : styles.playerO,
+          ]}>
+          <Text style={styles.gameTurnTxt}>
+            Player {isCross ? 'X' : 'O'}'s Turn
+          </Text>
+        </View>
+      )}
+
+      {/* Game Grid  */}
+      <FlatList
+        numColumns={3}
+        data={gameState}
+        style={styles.grid}
+        renderItem={({item, index}) => (
+          <Pressable
+            key={index}
+            style={styles.card}
+            onPress={() => onChangeItem(index)}
+            >
+            <Icons name={item} />
+          </Pressable>
+        )}
+      />
+
+      {/* game action */}
+      <Pressable
+      style={styles.gameBtn}
+      onPressIn={() => reloadGame()}
+      >
+        <Text style={styles.gameBtnText}>
+          {gameWinner ? 'Start new game' : 'reLoad the game'}
+        </Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
@@ -128,7 +180,7 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowColor: '#333',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.2,  
     shadowRadius: 1.5,
   },
   gameTurnTxt: {
