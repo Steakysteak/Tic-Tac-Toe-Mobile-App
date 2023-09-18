@@ -24,3 +24,17 @@ Choose your opponent - X or O.
 Take turns to make your move on the 3x3 grid.
 Form a line of three of your symbols (horizontally, vertically, or diagonally) to win.
 If the grid is full and no one has won, it's a draw!
+
+Snapshots from the App: 
+
+
+![TTT1](https://github.com/Steakysteak/Tic-Tac-Toe-Mobile-App/assets/75496668/9977cc7d-6f29-470b-abd3-1748a8bf5939)
+
+![TTT2](https://github.com/Steakysteak/Tic-Tac-Toe-Mobile-App/assets/75496668/b57bf12a-2758-43bb-ad28-fc94a6be9973)
+
+![TTT3](https://github.com/Steakysteak/Tic-Tac-Toe-Mobile-App/assets/75496668/b793db62-c08e-4387-803e-3b288c686c3b)
+
+![TTT4](https://github.com/Steakysteak/Tic-Tac-Toe-Mobile-App/assets/75496668/27328e3f-9fdd-41c9-9d4a-763ddaa72212)
+
+
+
